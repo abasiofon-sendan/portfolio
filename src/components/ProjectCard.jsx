@@ -75,7 +75,7 @@ export default function ProjectCard({ entry }) {
       <div className="mt-auto flex flex-wrap items-center gap-4">
         {isApi ? (
           <>
-            <InternalLink to={`/apis/${slug}`}>View details</InternalLink>
+            <InternalLink to={`/apis/${slug}`}>Read the build story</InternalLink>
             {frontmatter.docsUrl ? (
               <ExternalLink href={frontmatter.docsUrl}>Swagger docs</ExternalLink>
             ) : null}

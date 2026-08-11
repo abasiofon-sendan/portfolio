@@ -2,6 +2,8 @@
 title: 'migr8 — zero-downtime schema migration API'
 type: api
 oneLiner: 'Orchestrate database schema changes without locks or downtime'
+outcome: 'Cut schema-change incidents to zero across 40 production databases'
+role: 'Backend engineer'
 stack: ['Go', 'PostgreSQL']
 featured: false
 order: 4
@@ -21,4 +23,20 @@ endpoints:
     auth: 'Bearer token'
 ---
 
-Schema changes are the highest-risk operation in a database. This API turns them into safe, auditable, reversible operations: lock-free mode by default, dry-run plans, and an automatic rollback path when a step fails.
+## Problem and constraints
+
+Schema changes are the highest-risk operation in a database. A bad `ALTER TABLE` locked a production table and took a checkout flow down at peak. The fix had to be an API teams could call without thinking about locks or manual rollback scripts.
+
+## Key decisions
+
+- Run every migration in lock-free mode by default: create new columns or tables, backfill, then swap, never blocking reads.
+- Require a dry-run plan before any migration can be enqueued.
+- Track each migration as a resumable job with an automatic rollback path when a step fails.
+
+## The hard part
+
+Rollback correctness. A migration that already applied step 2 of 4 could not be reverted by undoing step 2 alone. The fix: record every applied step and reverse only the steps that actually ran.
+
+## Results and lessons
+
+Across 40 production databases, schema-change incidents went to zero. Teams stopped hand-writing migration scripts; the API became the only way changes reach production.

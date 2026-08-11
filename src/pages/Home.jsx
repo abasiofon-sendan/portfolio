@@ -40,13 +40,13 @@ export default function Home() {
             </p>
           </Reveal>
 
-          {/* Avatar cell: centered, spanning both rows */}
+          {/* Avatar cell: fills the whole two-row column */}
           <Reveal delay={0.05} className="sm:row-span-2">
-            <div className="flex h-full min-h-64 items-center justify-center rounded-md border border-ink-border bg-ink-panel p-4">
+            <div className="relative h-full min-h-72 overflow-hidden rounded-md border border-ink-border sm:min-h-0">
               <img
                 src={avatar}
                 alt={`Portrait of ${site.name}`}
-                className="h-56 w-56 object-cover ring-1 ring-ink-border sm:h-64 sm:w-64"
+                className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
           </Reveal>

@@ -16,7 +16,7 @@ export default function ApiDetail() {
   }
 
   const { frontmatter, Content } = entry
-  const { title, oneLiner, stack, docsUrl, endpoints = [], heroImage, heroImageAlt } = frontmatter
+  const { title, oneLiner, outcome, role, stack, docsUrl, endpoints = [], heroImage, heroImageAlt } = frontmatter
 
   const firstEndpoint = endpoints[0]
   const terminalLines = [
@@ -49,7 +49,21 @@ export default function ApiDetail() {
 
         <header className="mt-6">
           <h1 className="font-display text-3xl font-semibold text-ink-text-1 sm:text-4xl">{title}</h1>
-          <p className="mt-3 text-lg text-ink-text-2">{oneLiner}</p>
+          <p className="mt-3 text-lg text-ink-text-2">{outcome || oneLiner}</p>
+          <dl className="mt-6 flex flex-wrap gap-6 border-t border-ink-border pt-6 text-sm">
+            {role ? (
+              <div>
+                <dt className="font-mono text-xs text-ink-text-2">Role</dt>
+                <dd className="mt-1 text-ink-text-1">{role}</dd>
+              </div>
+            ) : null}
+            {stack?.length ? (
+              <div>
+                <dt className="font-mono text-xs text-ink-text-2">Stack</dt>
+                <dd className="mt-1 text-ink-text-1">{stack.join(', ')}</dd>
+              </div>
+            ) : null}
+          </dl>
         </header>
 
         <div className="mt-8">
@@ -96,9 +110,12 @@ export default function ApiDetail() {
         ) : null}
 
         <div className="mt-12">
-          <Prose>
-            <Content />
-          </Prose>
+          <h2 className="font-display text-xl font-semibold text-ink-text-1">Build story</h2>
+          <div className="mt-4">
+            <Prose>
+              <Content />
+            </Prose>
+          </div>
         </div>
 
         <div className="mt-10">

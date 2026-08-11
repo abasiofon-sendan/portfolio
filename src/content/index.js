@@ -13,7 +13,7 @@ export const PROJECT_TYPES = {
 
 const REQUIRED_FIELDS = {
   [PROJECT_TYPES['case-study']]: ['title', 'type', 'outcome', 'role', 'stack', 'featured', 'order'],
-  [PROJECT_TYPES.api]: ['title', 'type', 'oneLiner', 'stack', 'featured', 'order', 'docsUrl'],
+  [PROJECT_TYPES.api]: ['title', 'type', 'oneLiner', 'outcome', 'role', 'stack', 'featured', 'order', 'docsUrl'],
 }
 
 function isArrayOfStrings(value) {
