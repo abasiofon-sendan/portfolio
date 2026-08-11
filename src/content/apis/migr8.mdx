@@ -1,0 +1,24 @@
+---
+title: 'migr8 — zero-downtime schema migration API'
+type: api
+oneLiner: 'Orchestrate database schema changes without locks or downtime'
+stack: ['Go', 'PostgreSQL']
+featured: false
+order: 4
+docsUrl: 'https://docs.example.com/migr8' # TODO: replace with real Swagger/OpenAPI docs URL
+endpoints:
+  - method: POST
+    path: /migrations
+    summary: 'Enqueue a migration plan'
+    auth: 'Bearer token'
+  - method: GET
+    path: /migrations/{id}/status
+    summary: 'Check migration health and progress'
+    auth: 'Bearer token'
+  - method: POST
+    path: /migrations/{id}/rollback
+    summary: 'Roll back a failed migration safely'
+    auth: 'Bearer token'
+---
+
+Schema changes are the highest-risk operation in a database. This API turns them into safe, auditable, reversible operations: lock-free mode by default, dry-run plans, and an automatic rollback path when a step fails.

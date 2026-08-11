@@ -1,0 +1,27 @@
+---
+title: 'Rate limiter that survived a 40x traffic spike'
+type: case-study
+outcome: 'Handled 40x normal traffic with zero outages and no rate-limit bypasses'
+role: 'Backend engineer'
+stack: ['Go', 'Redis']
+featured: false
+order: 2
+---
+
+## Problem and constraints
+
+A public API kept getting hammered during product launches. The old in-process limiter failed under multiple instances: limits reset independently per node, letting users bypass them.
+
+## Key decisions
+
+- Move the limiter to Redis using a fixed-window counter with a Lua script for atomicity.
+- Keep a tiny local cache to absorb reads without hammering Redis.
+- Return `Retry-After` headers so clients back off instead of retrying blindly.
+
+## The hard part
+
+Cache invalidation across nodes. A stale local counter allowed bursts slightly over the limit. The fix was a short TTL (250ms) that shrank the worst-case overshoot to a rounding error.
+
+## Results and lessons
+
+During the spike the API stayed up, and support never saw a single rate-limit complaint. Atomic operations in Redis are far cheaper than distributed locks.
