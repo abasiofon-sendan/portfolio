@@ -43,6 +43,7 @@ export const site = {
       company: 'Acme Corp', // TODO: replace with real employer
       period: '2023 — Present',
       summary: 'Owner of the webhook delivery service and the API layer.',
+      stack: ['Go', 'PostgreSQL', 'Redis', 'Docker'],
       highlights: [
         'Shipped eventbridge, a webhook delivery API in Go',
         'Cut failed webhook deliveries from 6% to under 0.5%',
@@ -54,6 +55,7 @@ export const site = {
       company: 'Startly', // TODO: replace with real employer
       period: '2021 — 2023',
       summary: 'Built APIs and background jobs for a SaaS product.',
+      stack: ['Python', 'FastAPI', 'Redis', 'PostgreSQL'],
       highlights: [
         'Designed a Redis-backed rate limiter that survived a 40x traffic spike',
         'Migrated in-memory state to Redis',
