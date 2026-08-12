@@ -63,16 +63,20 @@ export const site = {
   ],
   certifications: [
     {
-      name: 'AWS Certified Developer - Associate',
-      issuer: 'Amazon Web Services',
-      year: '2024',
+      name: 'PCEP — Certified Entry-Level Python Programmer',
+      issuer: 'Python Institute', // TODO: replace with real cert
+      year: '2025',
       url: '#', // TODO: replace with credential link
+      description: 'Core Python syntax, data structures, functions, and control flow.',
+      tags: ['Python'],
     },
     {
-      name: 'HashiCorp Certified: Terraform Associate',
-      issuer: 'HashiCorp',
-      year: '2023',
+      name: 'PostgreSQL & SQL Basics',
+      issuer: 'Coursera', // TODO: replace with real cert
+      year: '2024',
       url: '#', // TODO: replace with credential link
+      description: 'Relational modelling, indexes, and query writing on PostgreSQL.',
+      tags: ['PostgreSQL', 'SQL'],
     },
   ],
   bannerHeight: 'Open to new backend projects',

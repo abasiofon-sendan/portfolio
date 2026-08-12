@@ -69,28 +69,32 @@ export default function Home() {
             </dl>
           </Reveal>
 
-          {/* Resume CTA cell */}
+          {/* Tagline cell */}
           <Reveal delay={0.15} className="rounded-md border border-ink-border bg-ink-panel p-6">
-            <a
-              href={site.resumeUrl}
-              className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-white px-4 py-3 text-sm font-medium text-black transition-opacity hover:opacity-90"
-            >
-              <DownloadIcon size={16} />
-              Request CV
-            </a>
+            <p className="font-mono text-xs text-ink-text-2">$ echo bio</p>
+            <p className="mt-3 text-sm leading-relaxed text-ink-text-2">{site.description}</p>
           </Reveal>
 
-          {/* Book a call cell */}
+          {/* Primary actions cell: both CTAs grouped together */}
           <Reveal delay={0.2} className="rounded-md border border-ink-border bg-ink-panel p-6">
-            <a
-              href={site.calUrl}
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-ink-text-2 px-4 py-3 text-sm font-medium text-ink-text-1 transition-colors hover:border-ink-text-1"
-            >
-              <CalendarIcon size={16} />
-              Book a call
-            </a>
+            <div className="flex h-full flex-col justify-center gap-3">
+              <a
+                href={site.resumeUrl}
+                className="inline-flex w-full items-center justify-center gap-2 rounded-md bg-white px-4 py-3 text-sm font-medium text-black transition-opacity hover:opacity-90"
+              >
+                <DownloadIcon size={16} />
+                Request CV
+              </a>
+              <a
+                href={site.calUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-md border border-ink-text-2 px-4 py-3 text-sm font-medium text-ink-text-1 transition-colors hover:border-ink-text-1"
+              >
+                <CalendarIcon size={16} />
+                Book a call
+              </a>
+            </div>
           </Reveal>
         </div>
 
@@ -221,6 +225,18 @@ export default function Home() {
                   <p className="mt-1 text-sm text-ink-text-2">
                     {cert.issuer} · {cert.year}
                   </p>
+                  {cert.description ? (
+                    <p className="mt-2 text-sm leading-relaxed text-ink-text-2">{cert.description}</p>
+                  ) : null}
+                  {cert.tags?.length ? (
+                    <ul className="mt-3 flex flex-wrap gap-2">
+                      {cert.tags.map((tag) => (
+                        <li key={tag} className="rounded border border-ink-border px-2 py-0.5 text-xs text-ink-text-2">
+                          {tag}
+                        </li>
+                      ))}
+                    </ul>
+                  ) : null}
                 </div>
                 {cert.url && cert.url !== '#' ? (
                   <a
