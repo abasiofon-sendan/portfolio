@@ -147,13 +147,30 @@ export default function Home() {
           <Reveal>
             <div id="experience" className="h-full scroll-mt-24 rounded-md border border-ink-border bg-ink-panel p-6">
               <h3 className="font-display text-lg font-semibold text-ink-text-1">Experience</h3>
-              <ol className="mt-6 space-y-6">
+              <ol className="mt-6">
                 {site.experience.map((job) => (
-                  <li key={`${job.company}-${job.period}`} className="border-l border-ink-border pl-5">
-                    <p className="font-display text-base font-semibold text-ink-text-1">{job.role}</p>
-                    <p className="mt-0.5 text-sm text-ink-text-2">{job.company}</p>
-                    <p className="mt-1 font-mono text-xs text-ink-text-2">{job.period}</p>
+                  <li key={`${job.company}-${job.period}`} className="relative border-l border-ink-border pb-8 pl-6 last:pb-0">
+                    <span className="absolute -left-[5px] top-1 h-2.5 w-2.5 rounded-full bg-ink-text-1" aria-hidden="true" />
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
+                      <div>
+                        <p className="font-display text-base font-semibold text-ink-text-1">{job.role}</p>
+                        <p className="mt-0.5 text-sm text-ink-text-2">{job.company}</p>
+                      </div>
+                      <p className="font-mono text-xs text-ink-text-2">{job.period}</p>
+                    </div>
                     <p className="mt-2 text-sm leading-relaxed text-ink-text-2">{job.summary}</p>
+                    {job.stack?.length ? (
+                      <ul className="mt-3 flex flex-wrap gap-2">
+                        {job.stack.map((tech) => (
+                          <li
+                            key={tech}
+                            className="rounded-full border border-ink-border bg-ink-bg px-2.5 py-1 text-xs text-ink-text-2"
+                          >
+                            {tech}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
                     <ul className="mt-3 space-y-1.5">
                       {job.highlights.map((h) => (
                         <li key={h} className="flex items-start gap-2 text-sm text-ink-text-2">

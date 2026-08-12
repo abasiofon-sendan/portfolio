@@ -20,6 +20,10 @@ function isArrayOfStrings(value) {
   return Array.isArray(value) && value.every((item) => typeof item === 'string')
 }
 
+function isAssetPath(value) {
+  return typeof value === 'string' && /^(\/|https?:\/\/)/.test(value)
+}
+
 function ensureValidProject({ slug, type, frontmatter }) {
   const required = REQUIRED_FIELDS[type]
   if (!required) {
@@ -49,6 +53,12 @@ function ensureValidProject({ slug, type, frontmatter }) {
   }
   if (type === PROJECT_TYPES.api && Array.isArray(frontmatter.endpoints) && frontmatter.endpoints.length > 3) {
     throw new Error(`[content] ${slug}: "endpoints" must have at most 3 signature endpoints`)
+  }
+  if (frontmatter.heroImage && !isAssetPath(frontmatter.heroImage)) {
+    throw new Error(`[content] ${slug}: "heroImage" must be a public path (e.g. "/projects/${slug}/hero.jpg") or an absolute http(s) URL`)
+  }
+  if (frontmatter.heroImage && !frontmatter.heroImageAlt) {
+    throw new Error(`[content] ${slug}: "heroImageAlt" is required when "heroImage" is set`)
   }
 }
 
