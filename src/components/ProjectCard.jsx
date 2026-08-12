@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import Terminal from './Terminal'
+import StackChips from './StackChips'
 import { ArrowRightIcon, ArrowUpRightIcon } from './Icons'
 
 function ExternalLink({ href, children }) {
@@ -28,41 +28,18 @@ function InternalLink({ to, children }) {
   )
 }
 
-function Stack({ stack }) {
-  return (
-    <ul className="flex flex-wrap gap-2">
-      {stack.map((item) => (
-        <li key={item} className="rounded border border-ink-border px-2 py-0.5 font-mono text-xs text-ink-text-2">
-          {item}
-        </li>
-      ))}
-    </ul>
-  )
-}
-
 export default function ProjectCard({ entry }) {
   const { frontmatter, slug } = entry
   const isApi = frontmatter.type === 'api'
+  const detailHref = isApi ? `/apis/${slug}` : `/work/${slug}`
+  const secondary = frontmatter.docsUrl
+    ? { href: frontmatter.docsUrl, label: 'API docs' }
+    : frontmatter.liveUrl
+      ? { href: frontmatter.liveUrl, label: 'Live app' }
+      : null
 
   return (
-    <article className="flex flex-col gap-6 rounded-md border border-ink-border bg-ink-panel p-6 transition-colors hover:border-ink-text-2">
-      {isApi ? (
-        <Terminal
-          title={slug}
-          lines={[
-            { prompt: true, text: `curl ${frontmatter.docsUrl?.replace(/^https?:\/\//, '') || slug}` },
-            { text: '> 200 OK' },
-            ...(frontmatter.endpoints?.[0]
-              ? [
-                  { text: `> ${frontmatter.endpoints[0].method} ${frontmatter.endpoints[0].path}` },
-                  { text: `> ${frontmatter.endpoints[0].summary?.slice(0, 60) || ''}...` },
-                ]
-              : []),
-          ]}
-          className="w-full"
-        />
-      ) : null}
-
+    <article className="flex flex-col gap-4 rounded-md border border-ink-border bg-ink-panel p-6 transition-all duration-300 hover:-translate-y-1 hover:border-ink-text-2">
       <div className="flex flex-col gap-2">
         <h3 className="font-display text-lg font-semibold text-ink-text-1">{frontmatter.title}</h3>
         <p className="text-sm leading-relaxed text-ink-text-2">
@@ -70,19 +47,11 @@ export default function ProjectCard({ entry }) {
         </p>
       </div>
 
-      <Stack stack={frontmatter.stack} />
+      <StackChips stack={frontmatter.stack} />
 
-      <div className="mt-auto flex flex-wrap items-center gap-4">
-        {isApi ? (
-          <>
-            <InternalLink to={`/apis/${slug}`}>Read the build story</InternalLink>
-            {frontmatter.docsUrl ? (
-              <ExternalLink href={frontmatter.docsUrl}>Swagger docs</ExternalLink>
-            ) : null}
-          </>
-        ) : (
-          <InternalLink to={`/work/${slug}`}>Read the build story</InternalLink>
-        )}
+      <div className="mt-auto flex flex-wrap items-center gap-x-4 gap-y-2 pt-2">
+        <InternalLink to={detailHref}>View project</InternalLink>
+        {secondary ? <ExternalLink href={secondary.href}>{secondary.label}</ExternalLink> : null}
       </div>
     </article>
   )

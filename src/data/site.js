@@ -13,7 +13,7 @@ export const site = {
     { value: '10+', label: 'projects shipped' },
     { value: '2', label: 'products at scale' },
   ],
-  stack: ['Go', 'Node.js', 'PostgreSQL', 'Redis', 'Docker', 'AWS', 'GraphQL', 'Kafka'],
+  stack: ['Python', 'Django', 'FastAPI', 'PostgreSQL', 'SQLite', 'Supabase'],
   socials: [
     { label: 'GitHub', url: 'https://github.com/abasiofon-sendan' },
     { label: 'LinkedIn', url: 'https://www.linkedin.com/in/abasiofon-sendan' },
@@ -21,7 +21,45 @@ export const site = {
     { label: 'Telegram', url: 'https://t.me/abasiofonsendan' },
   ],
   education: [
-    { degree: 'B.Sc. Computer Science', school: 'University of Uyo', year: '2020' },
+    {
+      degree: 'B.Eng. Computer Engineering', // TODO: confirm exact program title
+      school: 'University of Uyo', // TODO: replace with real school
+      period: '2021 — Present',
+      courses: [
+        'Data Structures & Algorithms',
+        'Operating Systems',
+        'Computer Networks',
+        'Database Systems',
+        'Computer Architecture',
+        'Object-Oriented Programming',
+        'Digital Logic Design',
+        'Microprocessors',
+      ],
+    },
+  ],
+  experience: [
+    {
+      role: 'Backend Engineer',
+      company: 'Acme Corp', // TODO: replace with real employer
+      period: '2023 — Present',
+      summary: 'Owner of the webhook delivery service and the API layer.',
+      highlights: [
+        'Shipped eventbridge, a webhook delivery API in Go',
+        'Cut failed webhook deliveries from 6% to under 0.5%',
+        'Introduced an outbox pattern across services',
+      ],
+    },
+    {
+      role: 'Backend Engineer',
+      company: 'Startly', // TODO: replace with real employer
+      period: '2021 — 2023',
+      summary: 'Built APIs and background jobs for a SaaS product.',
+      highlights: [
+        'Designed a Redis-backed rate limiter that survived a 40x traffic spike',
+        'Migrated in-memory state to Redis',
+        'Kept the API integration suite green across every release',
+      ],
+    },
   ],
   certifications: [
     {
@@ -37,5 +75,5 @@ export const site = {
       url: '#', // TODO: replace with credential link
     },
   ],
-  bannerHeight: 'Open for senior backend roles',
+  bannerHeight: 'Open to new backend projects',
 }

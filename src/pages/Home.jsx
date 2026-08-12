@@ -1,9 +1,10 @@
 import Seo from '@/components/Seo'
 import Reveal from '@/components/Reveal'
 import ProjectCard from '@/components/ProjectCard'
+import StackChips from '@/components/StackChips'
 import { site } from '@/data/site.js'
 import { getFeaturedEntries } from '@/content/index.js'
-import { ArrowRightIcon, DotIcon, DownloadIcon, CalendarIcon, MailIcon, CheckIcon } from '@/components/Icons'
+import { ArrowRightIcon, DownloadIcon, CalendarIcon, MailIcon, CheckIcon } from '@/components/Icons'
 import avatar from '@/assets/avatar.jpg'
 
 export default function Home() {
@@ -32,10 +33,13 @@ export default function Home() {
           {/* Identity cell */}
           <Reveal className="rounded-md border border-ink-border bg-ink-panel p-6 sm:col-span-1">
             <p className="font-mono text-xs text-ink-text-2">$ whoami</p>
-            <h1 className="mt-3 font-display text-2xl font-semibold text-ink-text-1 sm:text-3xl">{site.name}</h1>
-            <p className="mt-1 text-sm text-ink-text-2">{site.role}</p>
+            <h1 className="mt-3 font-display text-3xl font-semibold text-ink-text-1 sm:text-4xl">{site.name}</h1>
+            <p className="mt-2 text-base text-ink-text-2 sm:text-lg">{site.role}</p>
             <p className="mt-4 inline-flex items-center gap-2 rounded-full border border-ink-border px-3 py-1 text-xs text-ink-text-2">
-              <DotIcon size={10} className="text-ink-text-1" />
+              <span className="relative flex h-2 w-2">
+                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-ink-text-1 opacity-60" />
+                <span className="relative inline-flex h-2 w-2 rounded-full bg-ink-text-1" />
+              </span>
               {site.status}
             </p>
           </Reveal>
@@ -91,14 +95,8 @@ export default function Home() {
         </div>
 
         {/* Stack strip */}
-        <Reveal delay={0.25} className="mt-4 rounded-md border border-ink-border bg-ink-panel px-6 py-4">
-          <ul className="flex flex-wrap items-center gap-3">
-            {site.stack.map((item) => (
-              <li key={item} className="font-mono text-xs text-ink-text-2">
-                {item}
-              </li>
-            ))}
-          </ul>
+        <Reveal delay={0.25} className="mt-4 rounded-md border border-ink-border bg-ink-panel px-5 py-4">
+          <StackChips stack={site.stack} />
         </Reveal>
       </section>
 
@@ -135,25 +133,74 @@ export default function Home() {
         </a>
       </section>
 
-      {/* Education */}
-      <section id="education" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-16" aria-labelledby="education-heading">
-        <p className="font-mono text-xs text-ink-text-2">$ cat education</p>
-        <h2 id="education-heading" className="mt-2 font-display text-2xl font-semibold text-ink-text-1">
-          Education
+      {/* Experience & Education, side by side */}
+      <section className="mx-auto max-w-6xl px-6 py-16" aria-labelledby="history-heading">
+        <p className="font-mono text-xs text-ink-text-2">$ ls history</p>
+        <h2 id="history-heading" className="mt-2 font-display text-2xl font-semibold text-ink-text-1">
+          Experience & Education
         </h2>
-        <ol className="mt-8 space-y-4">
-          {site.education.map((item, index) => (
-            <Reveal key={`${item.degree}-${index}`} delay={index * 0.05}>
-              <li className="flex flex-col gap-1 rounded-md border border-ink-border bg-ink-panel p-5 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <p className="font-display text-base font-semibold text-ink-text-1">{item.degree}</p>
-                  <p className="mt-0.5 text-sm text-ink-text-2">{item.school}</p>
-                </div>
-                <p className="font-mono text-sm text-ink-text-2">{item.year}</p>
-              </li>
-            </Reveal>
-          ))}
-        </ol>
+        <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
+          <Reveal>
+            <div id="experience" className="h-full scroll-mt-24 rounded-md border border-ink-border bg-ink-panel p-6">
+              <h3 className="font-display text-lg font-semibold text-ink-text-1">Experience</h3>
+              <ol className="mt-6 space-y-6">
+                {site.experience.map((job) => (
+                  <li key={`${job.company}-${job.period}`} className="border-l border-ink-border pl-5">
+                    <p className="font-display text-base font-semibold text-ink-text-1">{job.role}</p>
+                    <p className="mt-0.5 text-sm text-ink-text-2">{job.company}</p>
+                    <p className="mt-1 font-mono text-xs text-ink-text-2">{job.period}</p>
+                    <p className="mt-2 text-sm leading-relaxed text-ink-text-2">{job.summary}</p>
+                    <ul className="mt-3 space-y-1.5">
+                      {job.highlights.map((h) => (
+                        <li key={h} className="flex items-start gap-2 text-sm text-ink-text-2">
+                          <CheckIcon size={15} className="mt-0.5 shrink-0 text-ink-text-1" />
+                          <span>{h}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <div id="education" className="h-full scroll-mt-24 rounded-md border border-ink-border bg-ink-panel p-6">
+              <h3 className="font-display text-lg font-semibold text-ink-text-1">Education</h3>
+              <ol className="mt-6 space-y-4">
+                {site.education.map((item, index) => (
+                  <li
+                    key={`${item.degree}-${index}`}
+                    className="rounded-md border border-ink-border bg-ink-bg p-4"
+                  >
+                    <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                      <div>
+                        <p className="font-display text-base font-semibold text-ink-text-1">{item.degree}</p>
+                        <p className="mt-0.5 text-sm text-ink-text-2">{item.school}</p>
+                      </div>
+                      {item.period ? <p className="font-mono text-xs text-ink-text-2">{item.period}</p> : null}
+                    </div>
+                    {item.courses?.length ? (
+                      <div className="mt-4">
+                        <p className="font-mono text-xs text-ink-text-2">Core courses</p>
+                        <ul className="mt-2 flex flex-wrap gap-2">
+                          {item.courses.map((course) => (
+                            <li
+                              key={course}
+                              className="rounded border border-ink-border px-2 py-1 text-xs text-ink-text-2"
+                            >
+                              {course}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    ) : null}
+                  </li>
+                ))}
+              </ol>
+            </div>
+          </Reveal>
+        </div>
       </section>
 
       {/* Certifications */}
@@ -198,9 +245,7 @@ export default function Home() {
           <h2 className="mx-auto mt-4 max-w-xl font-display text-3xl font-semibold text-ink-text-1 sm:text-4xl">
             Let's build something that holds up.
           </h2>
-          <p className="mt-4 text-sm text-ink-text-2">
-            {site.bannerHeight} — {site.role}.
-          </p>
+          <p className="mt-4 text-sm text-ink-text-2">{site.bannerHeight}.</p>
           <a
             href={`mailto:${site.email}`}
             className="mt-8 inline-flex items-center gap-2 font-mono text-xl text-ink-text-1 underline decoration-ink-text-2 underline-offset-8 transition-colors hover:decoration-ink-text-1 sm:text-2xl"

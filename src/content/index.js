@@ -42,6 +42,11 @@ function ensureValidProject({ slug, type, frontmatter }) {
   if (type === PROJECT_TYPES.api && frontmatter.docsUrl && !/^https?:\/\//.test(frontmatter.docsUrl)) {
     throw new Error(`[content] ${slug}: "docsUrl" must be an absolute http(s) URL`)
   }
+  for (const field of ['liveUrl', 'repoUrl', 'docsUrl']) {
+    if (frontmatter[field] && !/^https?:\/\//.test(frontmatter[field])) {
+      throw new Error(`[content] ${slug}: "${field}" must be an absolute http(s) URL`)
+    }
+  }
   if (type === PROJECT_TYPES.api && Array.isArray(frontmatter.endpoints) && frontmatter.endpoints.length > 3) {
     throw new Error(`[content] ${slug}: "endpoints" must have at most 3 signature endpoints`)
   }

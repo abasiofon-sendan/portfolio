@@ -47,4 +47,8 @@ body {
   html {
     scroll-behavior: auto;
   }
+  .animate-ping,
+  .animate-pulse {
+    animation: none;
+  }
 }

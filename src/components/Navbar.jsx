@@ -5,6 +5,7 @@ import { site } from '@/data/site.js'
 
 const NAV_LINKS = [
   { label: 'Work', to: '/work', hash: null },
+  { label: 'Experience', to: '/#experience', hash: 'experience' },
   { label: 'Education', to: '/#education', hash: 'education' },
   { label: 'Contact', to: '/#contact', hash: 'contact' },
 ]

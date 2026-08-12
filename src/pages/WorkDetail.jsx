@@ -4,7 +4,7 @@ import Prose from '@/components/Prose'
 import NotFound from './NotFound'
 import { site } from '@/data/site.js'
 import { getWorkEntries } from '@/content/index.js'
-import { ArrowLeftIcon } from '@/components/Icons'
+import { ArrowLeftIcon, ArrowUpRightIcon } from '@/components/Icons'
 
 export default function WorkDetail() {
   const { slug } = useParams()
@@ -15,7 +15,7 @@ export default function WorkDetail() {
   }
 
   const { frontmatter, Content } = entry
-  const { title, outcome, role, stack, heroImage, heroImageAlt } = frontmatter
+  const { title, outcome, role, stack, liveUrl, repoUrl, heroImage, heroImageAlt } = frontmatter
 
   return (
     <>
@@ -56,6 +56,33 @@ export default function WorkDetail() {
 
         {heroImage ? (
           <img src={heroImage} alt={heroImageAlt || title} className="mt-8 w-full rounded-md border border-ink-border" />
+        ) : null}
+
+        {(liveUrl || repoUrl) ? (
+          <div className="mt-8 flex flex-wrap items-center gap-4">
+            {liveUrl ? (
+              <a
+                href={liveUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-medium text-black transition-opacity hover:opacity-90"
+              >
+                View live app
+                <ArrowUpRightIcon size={15} />
+              </a>
+            ) : null}
+            {repoUrl ? (
+              <a
+                href={repoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 text-sm font-medium text-ink-text-2 transition-colors hover:text-ink-text-1"
+              >
+                Source code
+                <ArrowUpRightIcon size={14} />
+              </a>
+            ) : null}
+          </div>
         ) : null}
 
         <Prose>

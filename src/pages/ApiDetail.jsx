@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom'
 import Seo from '@/components/Seo'
 import Prose from '@/components/Prose'
 import Terminal from '@/components/Terminal'
+import StackChips from '@/components/StackChips'
 import NotFound from './NotFound'
 import { site } from '@/data/site.js'
 import { getApiEntries } from '@/content/index.js'
@@ -16,7 +17,7 @@ export default function ApiDetail() {
   }
 
   const { frontmatter, Content } = entry
-  const { title, oneLiner, outcome, role, stack, docsUrl, endpoints = [], heroImage, heroImageAlt } = frontmatter
+  const { title, oneLiner, outcome, role, stack, docsUrl, liveUrl, repoUrl, endpoints = [], heroImage, heroImageAlt } = frontmatter
 
   const firstEndpoint = endpoints[0]
   const terminalLines = [
@@ -67,7 +68,7 @@ export default function ApiDetail() {
         </header>
 
         <div className="mt-8">
-          <Terminal title={slug} lines={terminalLines} />
+          <Terminal title={slug} lines={terminalLines} typed />
         </div>
 
         {heroImage ? (
@@ -97,17 +98,41 @@ export default function ApiDetail() {
           </section>
         ) : null}
 
-        {docsUrl ? (
-          <a
-            href={docsUrl}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-10 inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-medium text-black transition-opacity hover:opacity-90"
-          >
-            View Swagger docs
-            <ArrowUpRightIcon size={15} />
-          </a>
-        ) : null}
+        <div className="mt-10 flex flex-wrap items-center gap-4">
+          {docsUrl ? (
+            <a
+              href={docsUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-medium text-black transition-opacity hover:opacity-90"
+            >
+              View API docs
+              <ArrowUpRightIcon size={15} />
+            </a>
+          ) : null}
+          {liveUrl ? (
+            <a
+              href={liveUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 rounded-md border border-ink-text-2 px-5 py-3 text-sm font-medium text-ink-text-1 transition-colors hover:border-ink-text-1"
+            >
+              Live app
+              <ArrowUpRightIcon size={15} />
+            </a>
+          ) : null}
+          {repoUrl ? (
+            <a
+              href={repoUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-medium text-ink-text-2 transition-colors hover:text-ink-text-1"
+            >
+              Source code
+              <ArrowUpRightIcon size={14} />
+            </a>
+          ) : null}
+        </div>
 
         <div className="mt-12">
           <h2 className="font-display text-xl font-semibold text-ink-text-1">Build story</h2>
@@ -119,21 +144,9 @@ export default function ApiDetail() {
         </div>
 
         <div className="mt-10">
-          <Stack stack={stack} />
+          <StackChips stack={stack} />
         </div>
       </article>
     </>
-  )
-}
-
-function Stack({ stack }) {
-  return (
-    <ul className="flex flex-wrap gap-2">
-      {stack.map((item) => (
-        <li key={item} className="rounded border border-ink-border px-2 py-0.5 font-mono text-xs text-ink-text-2">
-          {item}
-        </li>
-      ))}
-    </ul>
   )
 }
