@@ -1,0 +1,44 @@
+---
+title: 'eventbridge.sh — webhook delivery API'
+type: api
+oneLiner: 'Webhook delivery and replay API for event-driven services'
+outcome: 'Sub-5s end-to-end delivery p95, with every attempt persisted and replayable'
+role: 'Solo engineer'
+stack: ['FastAPI', 'PostgreSQL', 'Supabase']
+featured: true
+order: 3
+docsUrl: 'https://docs.example.com/eventbridge' # TODO: replace with real API docs URL
+liveUrl: 'https://eventbridge.example.com' # TODO: replace with the frontend app that consumes this API, if any
+repoUrl: 'https://github.com/abasiofon-sendan/eventbridge' # TODO: replace with real repo URL
+endpoints:
+  - method: POST
+    path: /events
+    summary: 'Publish an event for delivery'
+    auth: 'Bearer token (X-API-Key header)'
+  - method: GET
+    path: /events/{id}
+    summary: 'Fetch delivery history and status for one event'
+    auth: 'Bearer token (X-API-Key header)'
+  - method: POST
+    path: /events/{id}/replay
+    summary: 'Re-deliver a failed webhook immediately'
+    auth: 'Bearer token (X-API-Key header)'
+---
+
+## Problem and constraints
+
+Consumers kept missing webhooks. When a delivery failed, the event was gone, and the only way to recover was digging through logs. The product decision: expose delivery as an API where every event is stored, every attempt is recorded, and any event can be replayed on demand.
+
+## Key decisions
+
+- Model events as a first-class resource: `POST /events` to publish, `GET /events/{id}` to inspect, `POST /events/{id}/replay` to re-deliver.
+- Use an outbox table so no event is lost before its first delivery attempt.
+- Authenticate every call with an API key in the `X-API-Key` header, scoped per consumer.
+
+## The hard part
+
+Replay semantics. A consumer needed to replay a single event without re-delivering the whole batch. The fix: per-event delivery records with their own retry state, so replay targets exactly one event.
+
+## Results and lessons
+
+End-to-end delivery sits under 5 seconds at p95, and every attempt is visible in the API. Consumers stopped asking "did we get the event?" and started asking "what happened to this one?" The full OpenAPI spec lives in Swagger; the endpoints above are the ones I reach for daily.
