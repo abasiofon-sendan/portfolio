@@ -1,0 +1,58 @@
+---
+title: 'orflow — multi-tenant subscription billing engine'
+type: api
+oneLiner: 'SaaS billing engine for subscriptions, invoices, and webhook delivery'
+outcome: 'Full billing lifecycle from plan creation to invoice reconciliation, with retried webhook delivery'
+role: 'Backend engineer'
+stack: ['FastAPI', 'SQLite', 'SQLAlchemy', 'Alembic', 'Redis', 'ARQ']
+featured: true
+order: 5
+docsUrl: 'https://orflow.vercel.app/docs'
+liveUrl: 'https://orflow.vercel.app'
+repoUrl: 'https://github.com/Team-Blueprint/orflow-backend'
+endpoints:
+  - method: POST
+    path: /subscriptions/create
+    summary: 'Create a subscription and initiate checkout'
+    auth: 'X-API-Key header'
+  - method: POST
+    path: /subscriptions/{id}/cancel
+    summary: 'Cancel a subscription immediately'
+    auth: 'X-API-Key header'
+  - method: POST
+    path: /plans/create
+    summary: 'Define a billing plan with price, interval, and features'
+    auth: 'X-API-Key header'
+heroImage: '/projects/my-api/orflow.jpg'
+heroImageAlt: 'OrFlow subscription billing engine dashboard'
+---
+
+## Problem and constraints
+
+SaaS teams repeatedly rebuild the same billing primitives: plans, subscriptions, invoices, payment retries, and webhook notifications. Every rebuild is bespoke, error-prone, and untestable in isolation. The goal was a single multi-tenant engine that any project could plug into via API key — one that handled the full billing lifecycle without each tenant owning the plumbing.
+
+## Key decisions
+
+- Model the billing domain as isolated resources — tenants, projects, customers, plans, subscriptions, invoices — each with its own router and service layer so business rules stay co-located with their data.
+- Use ARQ (async Redis queue) for all outbound webhook delivery so HTTP failures in a tenant's endpoint never block the main request path.
+- Implement exponential backoff retries (1 min → 5 min → 15 min) with a hard ceiling of three attempts, after which the event is marked `failed` and retrievable by the tenant.
+- Provide both `live` and `test` mode per project, toggled at request time via middleware, so tenants can validate flows without touching production data.
+- Generate Alembic migrations for every schema change so the database state is always reproducible and auditable.
+
+## The hard part
+
+Subscription state transitions. A subscription passes through `trialing`, `active`, `paused`, `past_due`, `canceled`, and `expired` — and only certain transitions are legal. An invalid transition (e.g. pausing an already-canceled subscription) had to be rejected at the service layer with a machine-readable `409` before touching the database, so callers could handle it without inspecting error strings.
+
+The second hard part was idempotency. Payment checkouts and webhook deliveries must not be double-triggered if a client retries a request. An `IdempotencyMiddleware` keyed on the request body hash gates every mutating call, returning the cached response for any duplicate within the TTL window.
+
+## Results and lessons
+
+The engine covers the full billing lifecycle end to end — plan creation, checkout initiation, trial management, invoice generation, payment reconciliation, and outbound webhook delivery — with a documented API and a self-serve Mintlify docs site at [orflow.vercel.app/docs](https://orflow.vercel.app/docs).
+
+Building retries as a first-class concern from day one (not bolted on later) meant the webhook delivery layer stayed clean: enqueue, attempt, record result, reschedule or mark failed — the same four steps every time.
+
+<ImageSlider images={[
+  { src: '/projects/my-api/orflow.jpg', alt: 'OrFlow subscription engine overview' },
+  { src: '/projects/my-api/orflow-2.png', alt: 'OrFlow billing dashboard' },
+  { src: '/projects/my-api/orflow-3.png', alt: 'OrFlow API documentation' },
+]} />
