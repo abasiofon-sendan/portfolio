@@ -3,7 +3,7 @@ export const site = {
   name: 'Abasiofon Sendan',
   role: 'Backend Engineer',
   status: 'Open to work',
-  email: 'hello@example.com', // TODO: replace with real email
+  email: 'abasiofon135@gmail.com', // TODO: replace with real email
   resumeUrl: '/resume.pdf', // TODO: add resume file to public/ or replace path
   calUrl: 'https://cal.com/example/30min', // TODO: replace with real booking link
   url: 'https://your-domain.com', // TODO: set the real production domain (idighekere.dev was only a design reference)
@@ -24,7 +24,7 @@ export const site = {
     {
       degree: 'B.Eng. Computer Engineering', // TODO: confirm exact program title
       school: 'University of Uyo', // TODO: replace with real school
-      period: '2021 — Present',
+      period: '2023 — Present',
       courses: [
         'Data Structures & Algorithms',
         'Operating Systems',
