@@ -1,6 +1,8 @@
 import { MDXProvider } from '@mdx-js/react'
+import ImageSlider from '@/components/ImageSlider'
 
 const components = {
+  ImageSlider,
   h2: (props) => <h2 className="mt-12 mb-4 font-display text-xl font-semibold text-ink-text-1" {...props} />,
   p: (props) => <p className="mb-4 leading-relaxed text-ink-text-2" {...props} />,
   ul: (props) => <ul className="mb-4 list-disc space-y-2 pl-6 text-ink-text-2" {...props} />,
