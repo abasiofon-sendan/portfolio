@@ -40,6 +40,19 @@ body {
   @apply bg-ink-bg text-ink-text-1 font-body antialiased;
 }
 
+.hero-pattern {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+@media (max-width: 767px) {
+  .hero-pattern {
+    background-image: none;
+  }
+}
+
 ::selection {
   @apply bg-white text-black;
 }
