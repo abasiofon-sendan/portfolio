@@ -163,7 +163,6 @@ export default function Home() {
                       className="inline-flex items-center gap-2 rounded-full border border-ink-border bg-ink-panel px-5 py-2.5 text-sm font-medium text-ink-text-2 transition-colors hover:border-ink-text-2 hover:text-ink-text-1"
                     >
                       <Icon size={16} />
-                      {s.label}
                     </a>
                   )
                 })}
@@ -203,20 +202,6 @@ export default function Home() {
                 className="absolute inset-0 h-full w-full object-cover"
               />
             </div>
-          </Reveal>
-
-          {/* Metrics cell */}
-          <Reveal delay={0.1} className="rounded-md border border-ink-border bg-ink-panel p-6">
-            <p className="font-mono text-xs text-ink-text-2">$ uptime</p>
-            <dl className="mt-3 space-y-3">
-              {site.metrics.map((metric) => (
-                <div key={metric.label} className="flex items-baseline gap-2">
-                  <dt className="sr-only">{metric.label}</dt>
-                  <dd className="font-display text-2xl font-semibold text-ink-text-1">{metric.value}</dd>
-                  <dd className="text-sm text-ink-text-2">{metric.label}</dd>
-                </div>
-              ))}
-            </dl>
           </Reveal>
 
           {/* Bio cell */}
