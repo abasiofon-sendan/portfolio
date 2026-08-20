@@ -33,7 +33,7 @@ export default function WorkDetail() {
         }}
       />
 
-      <article className="mx-auto max-w-3xl px-6 pt-16">
+      <article className="mx-auto max-w-3xl px-4 pt-16 md:px-6">
         <Link to="/work" className="inline-flex items-center gap-1.5 text-sm text-ink-text-2 transition-colors hover:text-ink-text-1">
           <ArrowLeftIcon size={14} />
           All projects
