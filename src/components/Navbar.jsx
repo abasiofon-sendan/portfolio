@@ -16,7 +16,7 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-ink-border bg-ink-bg/80 backdrop-blur-md">
-      <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4" aria-label="Main navigation">
+      <nav className="mx-auto flex max-w-6xl items-center justify-between px-4 py-4 md:px-6" aria-label="Main navigation">
         <Link to="/" className="font-display text-lg font-bold tracking-tight text-ink-text-1">
           AS<span className="text-ink-text-2">.</span>
         </Link>
@@ -24,7 +24,7 @@ export default function Navbar() {
         <button
           type="button"
           onClick={() => setOpen((v) => !v)}
-          className="flex h-9 w-9 items-center justify-center rounded-md border border-ink-border text-ink-text-1 md:hidden"
+          className="flex h-9 w-9 items-center justify-center text-ink-text-1 md:hidden"
           aria-label={open ? 'Close menu' : 'Open menu'}
           aria-expanded={open}
         >
@@ -32,7 +32,7 @@ export default function Navbar() {
         </button>
 
         <ul
-          className={`absolute left-0 top-full w-full flex-col gap-2 border-b border-ink-border bg-ink-bg px-6 pb-5 pt-2 text-sm transition-all duration-300 md:static md:flex md:w-auto md:flex-row md:items-center md:gap-8 md:border-0 md:bg-transparent md:px-0 md:pb-0 md:pt-0 ${
+          className={`absolute left-0 top-full w-full flex-col gap-2 border-b border-ink-border bg-ink-bg px-4 pb-5 pt-2 text-sm transition-all duration-300 md:static md:flex md:w-auto md:flex-row md:items-center md:gap-8 md:border-0 md:bg-transparent md:px-0 md:pb-0 md:pt-0 ${
             open ? 'flex' : 'hidden'
           }`}
         >

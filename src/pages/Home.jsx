@@ -167,7 +167,7 @@ export default function Home() {
       <section
         className="hero-pattern relative overflow-hidden border-b border-ink-border"
       >
-        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-6 py-20 md:grid-cols-2 md:py-28">
+        <div className="mx-auto grid max-w-6xl grid-cols-1 items-center gap-12 px-4 py-20 md:grid-cols-2 md:py-28 md:px-6">
           {/* Left — copy */}
           <Reveal>
             <p className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-ink-text-2">backend engineer</p>
@@ -209,7 +209,7 @@ export default function Home() {
       </section>
 
       {/* ─── SECTION 2: Bento Profile Grid ─── */}
-      <section className="mx-auto max-w-6xl px-6 pt-14 pb-10">
+      <section className="mx-auto max-w-6xl px-4 pt-14 pb-10 md:px-6">
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           {/* Identity cell */}
           <Reveal className="rounded-md border border-ink-border bg-ink-panel p-6">
@@ -267,7 +267,7 @@ export default function Home() {
       </section>
 
       {/* ─── Featured projects ─── */}
-      <section className="mx-auto max-w-6xl px-6 py-16" aria-labelledby="featured-heading">
+      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6" aria-labelledby="featured-heading">
         <div className="flex items-end justify-between">
           <div>
             <p className="font-mono text-xs text-ink-text-2">$ ls projects --featured</p>
@@ -300,7 +300,7 @@ export default function Home() {
       </section>
 
       {/* ─── Experience & Education ─── */}
-      <section className="mx-auto max-w-6xl px-6 py-16" aria-labelledby="history-heading">
+      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6" aria-labelledby="history-heading">
         <p className="font-mono text-xs text-ink-text-2">$ ls history</p>
         <h2 id="history-heading" className="mt-2 font-display text-2xl font-semibold text-ink-text-1">
           Experience & Education
@@ -387,7 +387,7 @@ export default function Home() {
       </section>
 
       {/* ─── Certifications ─── */}
-      <section className="mx-auto max-w-6xl px-6 py-16" aria-labelledby="certs-heading">
+      <section className="mx-auto max-w-6xl px-4 py-16 md:px-6" aria-labelledby="certs-heading">
         <p className="font-mono text-xs text-ink-text-2">$ ls certs</p>
         <h2 id="certs-heading" className="mt-2 font-display text-2xl font-semibold text-ink-text-1">
           Certifications
@@ -432,26 +432,26 @@ export default function Home() {
       </section>
 
       {/* ─── Contact ─── */}
-      <section id="contact" className="mx-auto max-w-6xl scroll-mt-24 px-6 py-20">
-        <Reveal className="rounded-md border border-ink-border bg-ink-panel px-6 py-14 text-center sm:px-10">
+      <section id="contact" className="mx-auto max-w-6xl scroll-mt-24 px-4 py-20 md:px-6">
+        <Reveal className="sm:rounded-md sm:border sm:border-ink-border sm:bg-ink-panel sm:px-10 sm:py-14 text-center">
           <p className="font-mono text-xs text-ink-text-2">$ ping me</p>
-          <h2 className="mx-auto mt-4 max-w-xl font-display text-3xl font-semibold text-ink-text-1 sm:text-4xl">
+          <h2 className="mx-auto mt-4 max-w-xl font-display text-2xl font-semibold text-ink-text-1 sm:text-4xl">
             Let's build something that holds up.
           </h2>
           <p className="mt-4 text-sm text-ink-text-2">{site.bannerHeight}.</p>
           <a
             href={`mailto:${site.email}`}
-            className="mt-8 inline-flex items-center gap-2 font-mono text-xl text-ink-text-1 underline decoration-ink-text-2 underline-offset-8 transition-colors hover:decoration-ink-text-1 sm:text-2xl"
+            className="mx-auto mt-6 inline-flex max-w-full items-center justify-center gap-2 break-all font-mono text-base text-ink-text-1 underline decoration-ink-text-2 underline-offset-8 transition-colors hover:decoration-ink-text-1 sm:mt-8 sm:text-2xl"
           >
-            <MailIcon size={22} />
-            {site.email}
+            <MailIcon size={20} className="shrink-0" />
+            <span className="min-w-0 break-all">{site.email}</span>
           </a>
           <div className="mt-10 flex justify-center">
             <a
               href={site.calUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 rounded-md bg-white px-5 py-3 text-sm font-medium text-black transition-opacity hover:opacity-90"
+              className="inline-flex items-center gap-2 rounded-md bg-white px-5 py-2 text-sm font-medium text-black transition-opacity hover:opacity-90 sm:py-3"
             >
               <CalendarIcon size={16} />
               Book a call

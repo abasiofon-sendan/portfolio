@@ -12,7 +12,7 @@ const SOCIAL_ICONS = {
 export default function Footer() {
   return (
     <footer className="mt-24 border-t border-ink-border">
-      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-6 py-10 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mx-auto flex max-w-6xl flex-col gap-6 px-4 py-10 sm:flex-row sm:items-center sm:justify-between md:px-6">
         <p className="text-sm text-ink-text-2">© {new Date().getFullYear()} {site.name}. Built with <span className="text-ink-text-1">❤</span> by{' '}
         <a
           href="https://idighekere.dev"
