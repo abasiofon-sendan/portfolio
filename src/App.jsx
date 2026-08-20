@@ -1,11 +1,12 @@
-import { useEffect } from 'react'
+import { useEffect, Suspense, lazy } from 'react'
 import { Routes, Route, useLocation } from 'react-router-dom'
 import Layout from '@/components/Layout'
 import Home from '@/pages/Home'
-import WorkIndex from '@/pages/WorkIndex'
-import WorkDetail from '@/pages/WorkDetail'
-import ApiDetail from '@/pages/ApiDetail'
-import NotFound from '@/pages/NotFound'
+
+const WorkIndex = lazy(() => import('@/pages/WorkIndex'))
+const WorkDetail = lazy(() => import('@/pages/WorkDetail'))
+const ApiDetail = lazy(() => import('@/pages/ApiDetail'))
+const NotFound = lazy(() => import('@/pages/NotFound'))
 
 function ScrollToTop() {
   const { pathname, hash } = useLocation()
@@ -26,13 +27,15 @@ export default function App() {
   return (
     <Layout>
       <ScrollToTop />
-      <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/work" element={<WorkIndex />} />
-        <Route path="/work/:slug" element={<WorkDetail />} />
-        <Route path="/apis/:slug" element={<ApiDetail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
+      <Suspense fallback={null}>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/work" element={<WorkIndex />} />
+          <Route path="/work/:slug" element={<WorkDetail />} />
+          <Route path="/apis/:slug" element={<ApiDetail />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Suspense>
     </Layout>
   )
 }

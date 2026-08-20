@@ -1,0 +1,39 @@
+# Abasiofon Sendan — Backend Engineer
+
+Backend engineer based in Nigeria. Builds APIs, webhook delivery systems, and data pipelines. 5+ years shipping backend systems.
+
+## Stack
+
+Python, Django, FastAPI, PostgreSQL, SQLite, Supabase, Go, Redis, Docker
+
+## What I Do
+
+- Design and build REST APIs
+- Webhook delivery infrastructure (Go)
+- Rate limiting, background jobs, event-driven systems
+- Database design and query optimization
+
+## Experience
+
+**Backend Engineer — Acme Corp (2023–present)**
+Owner of the webhook delivery service and API layer. Shipped eventbridge (webhook delivery API in Go). Cut failed deliveries from 6% to under 0.5%. Introduced an outbox pattern across services.
+
+**Backend Engineer — Startly (2021–2023)**
+Built APIs and background jobs for a SaaS product. Designed a Redis-backed rate limiter that survived a 40x traffic spike. Migrated in-memory state to Redis.
+
+## Education
+
+B.Eng. Computer Engineering — University of Uyo (2023–present)
+
+## Certifications
+
+- PCEP — Certified Entry-Level Python Programmer (Python Institute, 2025)
+- PostgreSQL & SQL Basics (Coursera, 2024)
+
+## Contact
+
+- Email: abasiofon135@gmail.com
+- GitHub: https://github.com/abasiofon-sendan
+- LinkedIn: https://www.linkedin.com/in/abasiofon-sendan
+- X: https://x.com/abasiofonsendan
+- Telegram: https://t.me/abasiofonsendan
