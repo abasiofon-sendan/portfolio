@@ -1,0 +1,79 @@
+---
+title: "traka — financial infrastructure for Nigeria's informal merchants"
+type: api
+oneLiner: "WhatsApp-native bookkeeping that turns informal trade into verifiable credit history — cash sales, transfers, and credit logged as easily as texting"
+outcome: "Live web app capturing full transaction volume (cash + digital) for 39.6M Nigerian micro-merchants, building credit profiles lenders can trust"
+role: "Backend engineer (Team-Blueprint)"
+stack: ["FastAPI", "SQLAlchemy", "PostgreSQL", "Google GenAI (Gemini 1.5 Flash)", "Groq", "APScheduler"]
+featured: true
+order: 6
+docsUrl: "https://still-in-development"
+liveUrl: "https://traka-app.vercel.app/"
+repoUrl: "https://github.com/Team-Blueprint/traka-backend"
+endpoints: []
+heroImage: "/projects/traka/traka.png"
+heroImageAlt: "Traka merchant dashboard showing WhatsApp-parsed sales, virtual account number, and weekly business summary"
+---
+
+## Problem and constraints
+
+Amaka runs a provision store in a Lagos market. On a typical day she sells bread, sachet water, and rice — some for cash, some on credit to regulars who repay weekly. She has no reliable way to know if she made a profit that day. She discovers she's out of stock only when a customer asks for an item she no longer has. Several customers owe her money, but she has no consistent record of who or how much.
+
+When Amaka needs ₦50,000 to restock ahead of a busy season, no financial institution will lend to her — she has no record proving her business is viable. This pattern is widespread: **Nigeria's 39.6 million micro and small enterprises generate 48% of national GDP, yet eight in ten fail before their fifth year**, most managed entirely through memory or paper. The core issue is not a lack of ambition, but a lack of financial visibility.
+
+
+## Key decisions
+
+- **AI-Powered Inventory Creation**: Uploading product catalogs manually is a massive barrier for informal merchants. Instead, merchants snap photos of their shelves, and Gemini 3.5 Flash automatically extracts structured product names and variants. No typing, no forms to fill.
+- **Virtual accounts as payment identity**: Every merchant gets a dedicated 10-digit virtual account at signup. Incoming transfers auto-reconcile via webhook — zero manual entry for digital payments.
+- **Dual reconciliation paths for transfers**:
+  - **Sale reconciliation** → product basket (product_id + qty) → computes revenue/profit from selling vs cost price
+  - **Debt reconciliation** → debtor_id + repayment_amount → reduces outstanding balance
+  Both produce a fully reconciled `Transaction` with audit trail.
+- **In-memory Background Scheduling for Weekly Summaries**: Instead of spinning up heavy external workers like Celery, I utilized APScheduler within the FastAPI lifespan to generate and dispatch weekly business summaries. This keeps infrastructure simple while ensuring cron jobs run reliably.
+
+
+<ImageSlider
+ images={[ 
+ { src: '/projects/traka/traka-3.png', alt: 'WhatsApp message parsing flow: merchant sends "sold 2 bread 1 milk" → Gemini structures → confirmation tap updates stock and profit' }
+ ]}
+  />
+
+## The hard part
+
+**1. AI Product Identification from Images**
+Uploading a product catalogue one-by-one is tedious for market vendors. 
+**Solution**: Used Gemini 3.5 Flash to automatically extract structured product names and variants (e.g., "Peak Full Cream Milk Tin (400g)") directly from merchant photos. Built a custom prompt enforcing standard commercial naming conventions and catching blurry images ("UNREADABLE") to ensure inventory data remains clean.
+
+**2. Transaction reconciliation state machine under concurrency**
+Transfer webhook → `UnallocatedTransaction` (pending). Merchant confirms "Sale" or "Debt" → validate basket/debtor → create `Transaction` (reconciled) → update inventory/debtor atomically.
+**Challenge**: Double-tap or concurrent confirmations on same reference could lead to double-crediting a debtor or double-decrementing stock.
+**Solution**: Rather than heavy database locking, the service queries specifically for `status == "unallocated"`. The first request updates the status to `"reconciled"` and commits. Any concurrent request instantly hits a 404 "Unallocated transaction not found", making the reconciliation completely idempotent.
+
+
+## Technical lessons
+
+**1. Domain-Driven Architecture for Scalability**
+Instead of the traditional layered approach—where all database models are dumped in one folder and all routes in another—I structured the codebase into distinct domain modules (e.g., `accounts`, `inventory`, `transactions`, `debtors`). Every feature is completely self-contained with its own router, service logic, and data model. This prevents the codebase from turning into a tangled mess as it grows, making it incredibly easy for new engineers to jump in and own a specific vertical slice of the application.
+
+**2. Dual Reconciliation Paths to Prevent Schema Bloat**
+In Traka, money moving isn't just a generic event; it represents either a product being sold or a debtor paying back what they owe. Instead of creating one massive `Transaction` database table filled with optional, nullable fields for every possible scenario, I built explicit, separate service paths: `reconcile_as_sale` and `reconcile_as_debt`. This enforces strict business rules at the code level (a sale must have a product basket, a repayment must have a debtor ID), entirely eliminating the risk of saving invalid transaction states to the database.
+
+## Results and Impact
+
+**Engineering Outcomes:**
+- **Rapid Inventory Onboarding:** By integrating Gemini 3.5 Flash for image extraction, merchants can create their product catalogs just by snapping photos, completely removing the friction of manual data entry.
+- **Robust State Management:** The decision to use strict dual-path reconciliation (`Sale` vs `Debt`) and `unallocated` state tracking proved highly effective at maintaining database integrity without relying on complex, heavy locking mechanisms.
+- **Guaranteed Tenant Isolation:** The strict dependency injection of `get_current_account_id` into every service layer ensures zero cross-tenant data leaks across the entire platform.
+
+**Strategic Outcomes:**
+- **Complete financial picture:** Unlike traditional tools (which rely on manual entry and skew heavily towards digital payments), Traka captures cash sales and debts with the same friction as bank transfers. This creates a much fuller, more accurate transaction volume.
+- **Lender-ready data:** By providing strict audit trails for both sales and debt repayments, Traka generates a verified financial history—creating proof of viability for ₦50K+ restock loans.
+- **Platform trajectory:** Bookkeeping → Payments → Credit → Financial infrastructure for Nigeria's 39.6M micro-enterprises.
+
+
+<ImageSlider images={[
+  { src: '/projects/traka/traka.png', alt: 'Traka merchant dashboard showing WhatsApp-parsed sales, virtual account number, and weekly business summary' },
+  { src: '/projects/traka/traka-2.png', alt: 'WhatsApp message parsing flow: merchant sends "sold 2 bread 1 milk" → Gemini structures → confirmation tap updates stock and profit' },
+  { src: '/projects/traka/traka-3.png', alt: 'Traka API documentation showing accounts, inventory, debtors, transactions, and webhooks endpoint groups' },
+]} />
