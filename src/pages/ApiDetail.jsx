@@ -17,7 +17,7 @@ export default function ApiDetail() {
   }
 
   const { frontmatter, Content } = entry
-  const { title, oneLiner, outcome, role, stack, docsUrl, liveUrl, repoUrl, endpoints = [], heroImage, heroImageAlt } = frontmatter
+  const { title, oneLiner, outcome, role, stack, docsUrl, liveUrl, repoUrl, endpoints = [], heroImage, heroImageAlt, labels } = frontmatter
 
   const firstEndpoint = endpoints[0]
   const terminalLines = [
@@ -49,6 +49,22 @@ export default function ApiDetail() {
         </Link>
 
         <header className="mt-6">
+          {labels?.length ? (
+            <div className="mb-4 flex flex-wrap items-center gap-3">
+              {labels.map((label, i) => (
+                <span
+                  key={label}
+                  className={`border px-2.5 py-1 font-mono text-[11px] uppercase tracking-wider ${
+                    i === 0
+                      ? 'border-ink-border bg-ink-panel text-amber-500/90'
+                      : 'border-transparent bg-ink-text-1 text-ink-bg font-medium'
+                  }`}
+                >
+                  {label}
+                </span>
+              ))}
+            </div>
+          ) : null}
           <h1 className="font-display text-3xl font-semibold text-ink-text-1 sm:text-4xl">{title}</h1>
           <p className="mt-3 text-lg text-ink-text-2">{outcome || oneLiner}</p>
           <dl className="mt-6 flex flex-wrap gap-6 border-t border-ink-border pt-6 text-sm">

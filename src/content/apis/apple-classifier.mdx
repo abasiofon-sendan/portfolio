@@ -1,0 +1,60 @@
+---
+title: "Apple vs Formalin apple classifier — AI-powered food safety detector"
+type: api
+oneLiner: "A deep learning computer vision system that distinguishes natural fresh apples from chemically preserved formalin-mixed apples"
+outcome: "Custom CNN achieving 98.4% test accuracy, deployed as an interactive Streamlit web app for real-time consumer protection"
+labels: ["Machine Learning", "Computer Vision"]
+role: "Machine Learning Engineer"
+stack: ["Python", "TensorFlow", "Keras", "Streamlit", "NumPy", "Pandas", "Scikit-learn"]
+featured: true
+order: 8
+docsUrl: "https://github.com/abasiofon-sendan/apple-quality-ai-detector#readme"
+liveUrl: "https://fresh-vs-formalin-classifier.streamlit.app/"
+repoUrl: "https://github.com/abasiofon-sendan/apple-quality-ai-detector"
+endpoints: []
+
+---
+<ImageSlider images={[
+  { src: '/projects/apple-classifier/apple-classifier.png', alt: 'Unified order materialization flow' },
+]} />
+
+## Problem and constraints
+
+Formalin (formaldehyde) is sometimes illegally used by vendors as a preservative to keep fruit looking artificially fresh for extended periods, posing severe health risks to consumers. To the naked eye, a formalin-mixed apple often looks indistinguishable from a naturally fresh one, making point-of-sale visual inspection extremely unreliable.
+
+The challenge was to build an accessible, automated tool that could accurately classify apples based on visual artifacts imperceptible to humans. Furthermore, the model needed to be lightweight enough to run inferences instantly through a simple web interface, allowing anyone to verify their fruit quality with just a smartphone photo.
+
+## Key decisions
+
+- **Data Sourcing & Curation**: Combined and heavily filtered two disparate public datasets (Kaggle and Hugging Face FruitVision) to isolate just the Apple images across "Fresh" and "Formalin-mixed" classes. This resulted in a robust 9,494-image dataset tailored specifically for this binary problem.
+- **Architectural Shootout**: Instead of defaulting to massive pre-trained models, we trained and compared a Custom CNN built from scratch against a fine-tuned MobileNetV3Small transfer-learning model.
+- **Aggressive Data Augmentation**: To prevent overfitting and ensure the model generalizes to real-world user photos (which often feature poor lighting and varying angles), we applied random flips, rotations, and zooms natively within the training pipeline.
+- **Streamlit Deployment**: Packaged the `.keras` model into a lightweight Streamlit application. This allowed us to quickly ship a functional UI where users can upload an image and immediately receive a prediction alongside a confidence score.
+
+## The hard part
+
+**Overcoming Transfer Learning Underperformance**
+Intuitively, using a state-of-the-art pre-trained model like MobileNetV3Small should yield the best results for image classification. However, during evaluation, the fine-tuned MobileNet model peaked at ~87.9% accuracy, while our Custom CNN from scratch hit a remarkable 98.4% accuracy with 99.7% precision. 
+
+The primary technical hurdle was identifying why the complex model was underperforming. We discovered that because our problem was a highly specific, localized anomaly detection task (identifying subtle chemical residue and unnatural waxiness), the deep feature extraction of MobileNet—which was trained on ImageNet for broad object recognition—was actually filtering out the subtle textural signals we needed. By designing a shallower Custom CNN (just 3 convolutional blocks with batch normalization and max pooling), the network was forced to focus on the low-level textural gradients of the apple's skin, ultimately producing a vastly superior classifier.
+
+<ImageSlider images={[
+  { src: '/projects/apple-classifier/fine_tuning_accuracy_curve.png', alt: 'Unified order materialization flow' },
+  { src: '/projects/apple-classifier/fine_tuning_loss_curve.png', alt: 'API response structure for payment initialization' }
+]} />
+
+## Results and Impact
+
+**Engineering Outcomes:**
+- **High-Precision Classifier**: Successfully trained and exported a highly optimized binary classifier with a 98.4% F1-score on a held-out test set of 952 images.
+- **Automated Experimentation**: Built a reproducible tracking pipeline for model checkpoints, metrics, classification reports, and confusion matrices saved as JSON and PNG artifacts.
+
+**Strategic Outcomes:**
+- **Democratizing Food Safety**: Delivered a proof-of-concept AI web application that gives everyday consumers a tangible tool to detect chemical adulteration in their fresh produce.
+- **Accessible Deployment**: By shipping the model with Streamlit rather than a complex frontend framework, we ensured rapid iteration and immediate usability for end-users.
+
+<ImageSlider images={[
+  { src: '/projects/apple-classifier/apple-classifier.png', alt: 'Kauchy backend architecture overview' },
+  { src: '/projects/apple-classifier/cnn_confusion_matrix.png', alt: 'Unified order materialization flow' },
+  { src: '/projects/apple-classifier/fine_tuning_accuracy_curve.png', alt: 'API response structure for payment initialization' }
+]} />
