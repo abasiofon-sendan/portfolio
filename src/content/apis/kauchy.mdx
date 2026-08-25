@@ -1,0 +1,69 @@
+---
+title: "kauchy — social commerce platform for student vendors"
+type: api
+oneLiner: "A backend that replaces endless WhatsApp statuses with shoppable video feeds — merging community discovery, real-time chat, and frictionless checkouts"
+outcome: "Production-ready Django infrastructure powering interactive storefronts and real-time 'Kauch' communities for student vendors"
+role: "Backend engineer"
+stack: ["Django", "Django REST Framework", "PostgreSQL", "Redis", "Django Channels", "Supabase", "Paystack"]
+featured: true
+order: 7
+docsUrl: "https://docs.kauchy.com"
+liveUrl: "https://kauchy.com"
+repoUrl: "https://github.com/Kauchy-app/Kauchy-backend"
+endpoints:
+  - method: POST
+    path: /payment/create-order/
+    summary: "Initialize a purchase via wallet or external card payment"
+    auth: "Bearer Token"
+  - method: GET
+    path: /payment/verify-purchase/{reference}
+    summary: "Verify external payment and materialize escrowed order"
+    auth: "Bearer Token"
+  - method: POST
+    path: /kauch/posts/{post_id}/bookmark/
+    summary: "Toggle post bookmarking for social discovery"
+    auth: "Bearer Token"
+heroImage: "/projects/kauchy/kauchy.png"
+heroImageAlt: "Kauchy API documentation and social commerce data model"
+---
+
+## Problem and constraints
+
+Student vendors typically sell by posting endless products on their WhatsApp statuses. This creates a terrible buyer experience, customers rarely swipe through dozens of images or videos, leading to massive drop-off. For the vendors, managing orders through DMs is chaotic and disorganized.
+
+Kauchy solves this by giving vendors a dedicated storefront and a "Kauch" community for direct customer engagement. Instead of passive viewing, vendors upload videos and images linked directly to purchasable products. The backend needed to support this social-first shopping experience by merging video feeds, community management, real-time chat, and a robust escrow and wallet system to protect student funds.
+
+## Key decisions
+
+- **Modular Domain Architecture**: The Django project is split into isolated apps (`paymentapp`, `wallet`, `orders`, `chatapp`, `kauch`), ensuring strict boundaries between social features and financial primitives.
+- **Unified Order Materialization**: Built a shared `materialize_orders()` pipeline that handles both wallet deductions and external card verifications, ensuring inventory and escrow states are updated atomically regardless of the payment method.
+- **Real-time WebSockets**: Integrated Django Channels with a Redis backend to power live chat and instant push notifications, essential for buyer-seller negotiations and order updates.
+- **Idempotent Payment Verification**: Card checkouts initialize a `PendingPurchase` stash. The verification endpoint safely processes the external gateway callback, enforcing idempotency so double-triggers never result in duplicate orders.
+
+## The hard part
+
+**1. In-flight State Management for Direct Checkouts**
+Bypassing the persistent `Cart` for "Buy Now" impulse purchases introduced a state management challenge. When a user clicked "Buy Now" and chose Paystack, they were redirected externally. Without a saved cart, how do we reconstruct the exact items, validate prices, and prevent stock from being oversold while they are checking out?
+**Solution**: Engineered a `PendingPurchase` stash that securely freezes the order parameters (product IDs, locked prices, quantities, and intended vendors). Upon successful payment verification, this stashed state is retrieved and materialized into strict multi-vendor orders, eliminating price-tampering or inventory race conditions during the external redirect.
+
+**2. Idempotent Escrow and Payment State Transitions**
+Handling third-party payment webhooks (Paystack) introduces severe risks: delayed callbacks, duplicate webhook deliveries, or users maliciously refreshing the verification endpoint. 
+**Solution**: Built a strictly idempotent `verify-purchase` pipeline wrapped in database transactions. Upon verification, the system atomically materializes the order and credits the vendor's internal wallet in a locked `HELD` (escrow) state. If a duplicate payload arrives, the system detects the resolved state and safely exits without double-crediting the vendor, ensuring absolute ledger accuracy.
+
+## Results and Impact
+
+**Engineering Outcomes:**
+- **Resilient Distributed Checkout**: The `PendingPurchase` state successfully decouples cart persistence from order materialization, handling multi-vendor checkout concurrency without race conditions.
+- **Strict Ledger Integrity**: Wrapping the escrow and wallet deductions in idempotent database transactions guarantees that external webhook failures or duplicate deliveries never compromise vendor balances.
+- **Sub-second Social Interactions**: Using Django Channels and Redis provided a low-latency foundation for the "Kauch" community, enabling real-time chat and notifications that feel native and responsive.
+
+**Strategic Outcomes:**
+- **Storefronts Over WhatsApp Statuses**: Student vendors are no longer constrained by the ephemeral 24-hour window of WhatsApp statuses. They now have persistent, shoppable video feeds and dedicated storefronts.
+- **Frictionless Buyer Conversion**: The seamless "Buy Now" integration directly within social feeds dramatically reduces drop-off compared to the manual DM-and-transfer workflow.
+- **Trust Through Escrow**: The built-in escrow system protects student buyers from scams and protects vendors from fake bank transfers, establishing a baseline of trust that informal commerce lacks.
+
+<ImageSlider images={[
+  { src: '/projects/kauchy/kauchy.png', alt: 'Kauchy backend architecture overview' },
+  { src: '/projects/kauchy/kauchy-mockup-2.png', alt: 'Unified order materialization flow' },
+  { src: '/projects/kauchy/kauchy-mockup-3.png', alt: 'API response structure for payment initialization' }
+]} />
