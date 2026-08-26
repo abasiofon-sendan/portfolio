@@ -172,12 +172,14 @@ export default function Home() {
           <Reveal>
             <p className="mb-4 font-mono text-xs uppercase tracking-[0.22em] text-ink-text-2">backend engineer</p>
             <h1 className="font-display text-4xl font-semibold leading-[1.1] text-ink-text-1 sm:text-5xl">
-              APIs, databases &amp; distributed systems
+              I build backends that don't fall over
               <span className="text-ink-text-2">.</span>
+              <span className="type-cursor" aria-hidden="true" />
             </h1>
             <p className="mt-5 max-w-lg text-base leading-relaxed text-ink-text-2 sm:text-lg">
-              I'm {site.name}, a backend engineer passionate about designing robust APIs, database
-              optimization, and shipping scalable systems that hold up under load.
+              I work on the backend — the APIs, databases, and services that have to stay correct
+              when traffic spikes and money moves. The unglamorous layer every product depends on,
+              built not to break.
             </p>
 
             {/* Social pills */}
