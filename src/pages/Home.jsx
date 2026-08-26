@@ -305,7 +305,7 @@ export default function Home() {
         <h2 id="history-heading" className="mt-2 font-display text-2xl font-semibold text-ink-text-1">
           Experience & Education
         </h2>
-        <div className="mt-8 grid grid-cols-1 gap-4 lg:grid-cols-2">
+        <div className="mt-8 grid grid-cols-1 items-start gap-4 lg:grid-cols-2">
           <Reveal>
             <div id="experience" className="h-full scroll-mt-24 lg:rounded-md lg:border lg:border-ink-border lg:bg-ink-panel lg:p-6">
               <h3 className="font-display text-lg font-semibold text-ink-text-1">Experience</h3>
@@ -394,38 +394,49 @@ export default function Home() {
         </h2>
         <ul className="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2">
           {site.certifications.map((cert, index) => (
-              <li key={`${cert.name}-${index}`} className="flex items-start justify-between gap-4 rounded-md border border-ink-border bg-ink-panel p-5">
-                <div>
-                  <p className="flex items-center gap-2 font-display text-base font-semibold text-ink-text-1">
-                    <CheckIcon size={16} />
-                    {cert.name}
-                  </p>
-                  <p className="mt-1 text-sm text-ink-text-2">
-                    {cert.issuer} · {cert.year}
-                  </p>
-                  {cert.description ? (
-                    <p className="mt-2 text-sm leading-relaxed text-ink-text-2">{cert.description}</p>
-                  ) : null}
-                  {cert.tags?.length ? (
-                    <ul className="mt-3 flex flex-wrap gap-2">
-                      {cert.tags.map((tag) => (
-                        <li key={tag} className="rounded border border-ink-border px-2 py-0.5 text-xs text-ink-text-2">
-                          {tag}
-                        </li>
-                      ))}
-                    </ul>
+              <li key={`${cert.name}-${index}`} className="flex flex-col overflow-hidden rounded-md border border-ink-border bg-ink-panel">
+                {cert.image ? (
+                  <img
+                    src={cert.image}
+                    alt={cert.imageAlt || cert.name}
+                    loading="lazy"
+                    decoding="async"
+                    className="aspect-[16/10] w-full border-b border-ink-border bg-ink-bg object-contain"
+                  />
+                ) : null}
+                <div className="flex items-start justify-between gap-4 p-5">
+                  <div>
+                    <p className="flex items-center gap-2 font-display text-base font-semibold text-ink-text-1">
+                      <CheckIcon size={16} />
+                      {cert.name}
+                    </p>
+                    <p className="mt-1 text-sm text-ink-text-2">
+                      {cert.issuer} · {cert.year}
+                    </p>
+                    {cert.description ? (
+                      <p className="mt-2 text-sm leading-relaxed text-ink-text-2">{cert.description}</p>
+                    ) : null}
+                    {cert.tags?.length ? (
+                      <ul className="mt-3 flex flex-wrap gap-2">
+                        {cert.tags.map((tag) => (
+                          <li key={tag} className="rounded border border-ink-border px-2 py-0.5 text-xs text-ink-text-2">
+                            {tag}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : null}
+                  </div>
+                  {cert.url && cert.url !== '#' ? (
+                    <a
+                      href={cert.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="text-sm text-ink-text-2 transition-colors hover:text-ink-text-1"
+                    >
+                      Verify
+                    </a>
                   ) : null}
                 </div>
-                {cert.url && cert.url !== '#' ? (
-                  <a
-                    href={cert.url}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-sm text-ink-text-2 transition-colors hover:text-ink-text-1"
-                  >
-                    Verify
-                  </a>
-                ) : null}
               </li>
           ))}
         </ul>

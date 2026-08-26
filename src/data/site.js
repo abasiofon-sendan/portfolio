@@ -26,59 +26,73 @@ export const site = {
       school: 'University of Uyo', // TODO: replace with real school
       period: '2023 — Present',
       courses: [
-        'Data Structures & Algorithms',
+        'Web Technology',
         'Operating Systems',
-        'Computer Networks',
-        'Database Systems',
-        'Computer Architecture',
-        'Object-Oriented Programming',
-        'Digital Logic Design',
-        'Microprocessors',
+        'Artificial Intelligence',
+        'Data Analysis',
+        'Computer organization & Architecture',
+        
       ],
     },
   ],
   experience: [
     {
       role: 'Backend Engineer',
-      company: 'Acme Corp', // TODO: replace with real employer
-      period: '2023 — Present',
-      summary: 'Owner of the webhook delivery service and the API layer.',
-      stack: ['Go', 'PostgreSQL', 'Redis', 'Docker'],
+      company: 'Kauchy',
+      period: 'January 2026 — Present', // TODO: confirm dates
+      summary: 'Backend for a social commerce platform for student vendors.',
+      stack: ['Django', 'Django REST Framework', 'PostgreSQL', 'Redis', 'Django Channels', 'Paystack'],
       highlights: [
-        'Shipped eventbridge, a webhook delivery API in Go',
-        'Cut failed webhook deliveries from 6% to under 0.5%',
-        'Introduced an outbox pattern across services',
+        'Kept vendor balances accurate through duplicate and delayed Paystack webhooks by making escrow crediting idempotent and transaction-safe — no double-credits',
+        'Stopped overselling and price-tampering on "Buy Now" checkouts by freezing order state (locked prices, quantities, vendors) across the external payment redirect',
+        'Eliminated race conditions in multi-vendor checkout with a unified pipeline that settled wallet and card payments atomically',
+        'Isolated payment and wallet logic from social features across modular Django apps, so financial code could change without touching the feed or chat',
       ],
     },
     {
-      role: 'Backend Engineer',
-      company: 'Startly', // TODO: replace with real employer
-      period: '2021 — 2023',
-      summary: 'Built APIs and background jobs for a SaaS product.',
-      stack: ['Python', 'FastAPI', 'Redis', 'PostgreSQL'],
+      role: 'Backend Developer (Contract)',
+      company: 'Agrovest',
+      period: 'January 2024 — July 2025', // TODO: confirm contract dates
+      summary: 'Django backend for an agriculture investment platform.',
+      stack: ['Python', 'Django', 'REST APIs', 'NoSQL'],
       highlights: [
-        'Designed a Redis-backed rate limiter that survived a 40x traffic spike',
-        'Migrated in-memory state to Redis',
-        'Kept the API integration suite green across every release',
+        'Optimized transaction processing, improving speed by 20%',
+        'Kept the platform easy to extend as it grew by structuring the Python/Django REST API into modular, decoupled components',
+        'Sped up retrieval of investment-cycle and returns data by optimizing the underlying NoSQL databases',
+        'Cut manual admin work 70% by digitizing investor and farm data',
       ],
     },
   ],
   certifications: [
     {
-      name: 'PCEP — Certified Entry-Level Python Programmer',
-      issuer: 'Python Institute', // TODO: replace with real cert
-      year: '2025',
+      name: 'Enyata × Interswitch Hackathon',
+      issuer: 'Enyata × Interswitch', // TODO: confirm issuing organiser
+      year: '2025', // TODO: confirm year
       url: '#', // TODO: replace with credential link
-      description: 'Core Python syntax, data structures, functions, and control flow.',
-      tags: ['Python'],
+      image: '/projects/certifications/enyata-interswitch-hackathon.jpg',
+      imageAlt: 'Enyata × Interswitch Hackathon certificate',
+      description: 'Certificate of participation in the Enyata × Interswitch hackathon.',
+      tags: ['Hackathon'],
     },
     {
-      name: 'PostgreSQL & SQL Basics',
-      issuer: 'Coursera', // TODO: replace with real cert
-      year: '2024',
+      name: 'Nomba Certified', // TODO: confirm exact certificate title
+      issuer: 'Nomba',
+      year: '2026',
+      url: '#', // TODO: replace with credential link (ref: X5PYS1)
+      image: '/projects/certifications/nomba-certified.png',
+      imageAlt: 'Nomba certification',
+      description: 'Completed the Nomba certification program.',
+      tags: ['Fintech'],
+    },
+    {
+      name: 'Queen Arit Circle Hackathon',
+      issuer: 'Queen Arit Circle', // TODO: confirm issuing organiser
+      year: '2025', // TODO: confirm year
       url: '#', // TODO: replace with credential link
-      description: 'Relational modelling, indexes, and query writing on PostgreSQL.',
-      tags: ['PostgreSQL', 'SQL'],
+      image: '/projects/certifications/queen-arit-circle-hackathon.jpg',
+      imageAlt: 'Queen Arit Circle Hackathon certificate',
+      description: 'Certificate of participation in the Queen Arit Circle hackathon.',
+      tags: ['Hackathon'],
     },
   ],
   bannerHeight: 'Open to new backend projects',
