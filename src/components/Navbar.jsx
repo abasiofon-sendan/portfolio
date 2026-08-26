@@ -60,6 +60,8 @@ export default function Navbar() {
           <li className="md:hidden">
             <a
               href={site.resumeUrl}
+              target="_blank"
+              rel="noreferrer"
               onClick={() => setOpen(false)}
               className="inline-flex w-full items-center justify-center rounded-md bg-white px-4 py-2 font-medium text-black transition-opacity hover:opacity-90"
             >
@@ -70,6 +72,8 @@ export default function Navbar() {
 
         <a
           href={site.resumeUrl}
+          target="_blank"
+          rel="noreferrer"
           className="hidden items-center rounded-md bg-white px-4 py-2 text-sm font-medium text-black transition-opacity hover:opacity-90 md:inline-flex"
         >
           Request CV

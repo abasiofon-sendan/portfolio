@@ -4,7 +4,7 @@ export const site = {
   role: 'Backend Engineer',
   status: 'Open to work',
   email: 'abasiofon135@gmail.com', // TODO: replace with real email
-  resumeUrl: '/resume.pdf', // TODO: add resume file to public/ or replace path
+  resumeUrl: '/resume/abasiofon-sendan-resume.pdf',
   calUrl: 'https://cal.com/example/30min', // TODO: replace with real booking link
   url: 'https://your-domain.com', // TODO: set the real production domain (idighekere.dev was only a design reference)
   description: 'Backend engineer. I design APIs and ship systems that hold up under load.',

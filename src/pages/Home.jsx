@@ -226,6 +226,8 @@ export default function Home() {
             <div className="mt-5 flex flex-col gap-2">
               <a
                 href={site.resumeUrl}
+                target="_blank"
+                rel="noreferrer"
                 className="inline-flex w-fit items-center justify-center gap-2 rounded-md bg-white px-4 py-2.5 text-sm font-medium text-black transition-opacity hover:opacity-90"
               >
                 <DownloadIcon size={16} />
